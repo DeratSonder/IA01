@@ -24,11 +24,12 @@ $(function () {
     $(".side").sortable();
 });
 
+//----------------------------------------------------------------
 
-$(document).ready(function() {
-   
+$(document).ready(function () {
+
     function synchronizeNavigation(navClicked, navToSync, clickedElement) {
-        var target = $(clickedElement).attr('href'); 
+        var target = $(clickedElement).attr('href');
 
         $(navToSync + ' a').removeClass('active');
         $(navToSync + ' a[href="' + target + '"]').addClass('active');
@@ -37,20 +38,19 @@ $(document).ready(function() {
         $(clickedElement).addClass('active');
     }
 
-    $('#nav-header a').on('click', function(event) {
-        event.preventDefault(); 
+    $('#nav-header a').on('click', function (event) {
+        event.preventDefault();
         synchronizeNavigation('#nav-header', '#nav-footer', this);
     });
 
-    $('#nav-footer a').on('click', function(event) {
-        event.preventDefault(); 
+    $('#nav-footer a').on('click', function (event) {
+        event.preventDefault();
         synchronizeNavigation('#nav-footer', '#nav-header', this);
     });
 });
 
-let newEmoji;
 
-/*----------------------------------------------------------------*/
+//----------------------------------------------------------------
 const dropdown = document.querySelector('.dropdown');
 const select = dropdown.querySelector('.select');
 const caret = dropdown.querySelector('.caret');
@@ -67,8 +67,6 @@ select.addEventListener('click', () => {
 options.forEach(option => {
     option.addEventListener('click', () => {
         selected.innerText = option.innerText;
-        newEmoji = selected.innerText
-        console.log(newEmoji);
         select.classList.remove('select-clicked');
         caret.classList.remove('caret-rotate');
         menu.classList.remove('menu-open');
@@ -88,19 +86,164 @@ document.addEventListener('click', (e) => {
 const dragDropContent = document.querySelector('.drag-drop-content');
 const addButton = document.getElementById('addButton');
 
-addButton.addEventListener('click', function() {
+addButton.addEventListener('click', function () {
     const newEmoji = document.querySelector('.selected').innerText
     dragDropContent.innerHTML += '<div class="drag-drop-content-item">' + newEmoji + '</div>';
 });
 
-$(function() {
+$(function () {
     $(".drag-drop-content").sortable({
         placeholder: "ui-sortable-placeholder",
         cursor: "move",
         tolerance: "pointer",
-        start: function(e, ui) {
+        start: function (e, ui) {
             ui.placeholder.height(ui.item.outerHeight());
             ui.placeholder.width(ui.item.outerWidth());
         }
+    });
+});
+
+//----------------------------------------------------------------
+
+const dropdownEdittext = document.getElementById('enterText');
+const menuEdittext = document.querySelector('.enter-text-dropdown');
+const optionsEdittext = document.querySelectorAll('.enter-text-dropdown li');
+
+dropdownEdittext.addEventListener('click', () => {
+    menuEdittext.classList.toggle('enter-text-dropdown-open');
+});
+
+optionsEdittext.forEach(option => {
+    option.addEventListener('click', () => {
+        enterText.value = option.innerText;
+        menuEdittext.classList.remove('enter-text-dropdown-open');
+    });
+});
+
+document.addEventListener('click', (e) => {
+    if (!dropdownEdittext.contains(e.target)) {
+        menuEdittext.classList.remove('enter-text-dropdown-open');
+    }
+});
+
+
+//----------------------------------------------------------------
+const dropdownSetting = document.getElementById('settingButton');
+const menuSetting = document.querySelector('.setting-text-dropdown');
+
+dropdownSetting.addEventListener('click', () => {
+    menuSetting.classList.toggle('setting-text-dropdown-open');
+});
+
+
+document.addEventListener('click', (e) => {
+    if (!dropdownSetting.contains(e.target) && !menuSetting.contains(e.target)) {
+        menuSetting.classList.remove('setting-text-dropdown-open');
+    }
+});
+
+//----------------------------------------------------------------
+
+
+$(function () {
+    $('input[type="color"]').on('input', function () {
+        if ($(this).attr('id') === 'textColor') {
+            $(':root').css('--bg-colorText', $(this).val());
+        }
+        else {
+            $(':root').css('--bg-coloBackground', $(this).val());
+        }
+    });
+});
+
+$(function () {
+
+    $('input[type="checkbox"]').on('change', function () {
+        let isBoldChecked = false;
+        let isItalicChecked = false;
+        let isUnderscoreChecked = false;
+
+        isBoldChecked = $('#bold').is(':checked');
+        isItalicChecked = $('#italic').is(':checked');
+        isUnderscoreChecked = $('#underline').is(':checked');
+
+        let fontWeight = isBoldChecked ? 'bold' : 'normal';
+        let fontStyle = isItalicChecked ? 'italic' : 'normal';
+        let textDecoration = isUnderscoreChecked ? 'underline' : 'none';
+
+        $('.sampleText').css({
+            'font-weight': fontWeight,
+            'font-style': fontStyle,
+            'text-decoration': textDecoration
+        });
+
+
+    });
+});
+
+
+$(document).ready(function () {
+    const originalContent = $('#editContent').html();
+
+    function processText(action) {
+        var enterText = $('#enterText').val();
+        if (!enterText) return;
+
+        const pattern = new RegExp(enterText, 'gi');
+        console.log(pattern);
+
+        var color = $('#sample').css('color');
+        var background = $('#sample').css('background-color');
+        var fontWeight = $('#sample').css('font-weight');
+        var textDecoration = $('#sample').css('text-decoration');
+        var fontStyle = $('#sample').css('font-style');
+
+        function traverseNode(node) {
+            if (node.nodeType === 3) { // Text node
+                var match = pattern.exec(node.data);
+                if (match) {
+                    if (action === 'highlight') {
+                        var span = document.createElement('span');
+                        span.className = 'contentText';
+                        var highlighted = node.splitText(match.index);
+                        highlighted.splitText(match[0].length);
+                        span.appendChild(highlighted.cloneNode(true));
+                        highlighted.parentNode.replaceChild(span, highlighted);
+                    } else if (action === 'delete') {
+                        node.data = node.data.replace(pattern, '');
+                    }
+                    return 1;
+                }
+            } else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+                for (var i = 0; i < node.childNodes.length; i++) {
+                    i += traverseNode(node.childNodes[i]);
+                }
+            }
+            return 0;
+        }
+
+        traverseNode(document.getElementById('editContent'));
+
+        if (action === 'highlight') {
+            $('.contentText').css({
+                'color': color,
+                'background-color': background,
+                'font-weight': fontWeight,
+                'font-style': fontStyle,
+                'text-decoration': textDecoration
+            });
+        }
+    }
+
+    $('#highlightButton').on('click', function () {
+        processText('highlight');
+    });
+
+    $('#deleteButton').on('click', function () {
+        processText('delete');
+    });
+
+    $('#resetButton').on('click', function () {
+        $('#editContent').html(originalContent);
     });
 });

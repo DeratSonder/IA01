@@ -8,8 +8,10 @@
     <title>IA01</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
 
 
 </head>
@@ -115,18 +117,48 @@
                     </div>
 
                     <div class="edit-text-process">
-                        <input type="text" />
-                        <button>Hightlight</button>
-                        <button>Delete</button>
-                        <button>Reset</button>
+
+                        <div class = "edit-text-process-dropdown">
+                            <input type="text" id ="enterText" placeholder="Enter text here">
+                            <ul class="enter-text-dropdown">
+                                <li>a</li>
+                                <li>a[a-z]</li>
+                                <li>.</li>
+                                <li>.a[a-z]</li>
+                            </ul>
+                        </div>
+                            
+                        <button id = "highlightButton">Highlight</button>
+                        <button id = "deleteButton">Delete</button>
+                        <button id = "resetButton">Reset</button>
                     </div>
 
                     <div class="edit-text-review">
-                        <input type="text" />
-                        <input type="color" />
+                        <p class = "sampleText" id ="sample">Sample Text</p>
+                        <input type="color" id ="textColor" />
+                        <div class="setting-dropdown">
+                            <button id="settingButton">&#x1F6E0</button>
+                            <form class = "setting-text-dropdown">
+                                <label>
+                                    <input type="checkbox" id = "bold" value="bold"> Bold
+                                </label><br>
+                                <label>
+                                    <input type="checkbox"  id="italic" value="italic"> Italic
+                                </label><br>
+                                <label>
+                                    <input type="checkbox" id="underline" value="underline"> Underline
+                                </label><br>
+                                <label>
+                                    <input type="color"  value=""> Background
+                                </label>
+                    
+                            </form>
+                           
+                        </div>
+                        
                     </div>
                 </div>
-                <div class="edit-text-content">
+                <div class="edit-text-content" id = "editContent">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ratione dolorum, sunt deleniti laborum
                     asperiores molestias! Provident cumque amet, quod cupiditate, ut animi sequi voluptate numquam,
                     possimus quo quisquam minima. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora
