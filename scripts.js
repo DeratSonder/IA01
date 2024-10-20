@@ -48,7 +48,9 @@ $(document).ready(function() {
     });
 });
 
+let newEmoji;
 
+/*----------------------------------------------------------------*/
 const dropdown = document.querySelector('.dropdown');
 const select = dropdown.querySelector('.select');
 const caret = dropdown.querySelector('.caret');
@@ -56,30 +58,49 @@ const menu = dropdown.querySelector('.menu');
 const options = dropdown.querySelectorAll('.menu li');
 const selected = dropdown.querySelector('.selected');
 
-// Toggle the dropdown menu when clicking on the select element
 select.addEventListener('click', () => {
     select.classList.toggle('select-clicked');
     caret.classList.toggle('caret-rotate');
     menu.classList.toggle('menu-open');
 });
 
-// Loop through all options and add a click event
 options.forEach(option => {
     option.addEventListener('click', () => {
-        // Change the selected text
         selected.innerText = option.innerText;
-        // Close the dropdown menu
+        newEmoji = selected.innerText
+        console.log(newEmoji);
         select.classList.remove('select-clicked');
         caret.classList.remove('caret-rotate');
         menu.classList.remove('menu-open');
     });
 });
 
-// Close the dropdown menu if clicking outside
 document.addEventListener('click', (e) => {
     if (!dropdown.contains(e.target)) {
         select.classList.remove('select-clicked');
         caret.classList.remove('caret-rotate');
         menu.classList.remove('menu-open');
     }
+});
+
+//----------------------------------------------------------------
+
+const dragDropContent = document.querySelector('.drag-drop-content');
+const addButton = document.getElementById('addButton');
+
+addButton.addEventListener('click', function() {
+    const newEmoji = document.querySelector('.selected').innerText
+    dragDropContent.innerHTML += '<div class="drag-drop-content-item">' + newEmoji + '</div>';
+});
+
+$(function() {
+    $(".drag-drop-content").sortable({
+        placeholder: "ui-sortable-placeholder",
+        cursor: "move",
+        tolerance: "pointer",
+        start: function(e, ui) {
+            ui.placeholder.height(ui.item.outerHeight());
+            ui.placeholder.width(ui.item.outerWidth());
+        }
+    });
 });
