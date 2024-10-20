@@ -189,8 +189,7 @@ $(document).ready(function () {
         var enterText = $('#enterText').val();
         if (!enterText) return;
 
-        const pattern = new RegExp(enterText, 'gi');
-        console.log(pattern);
+        const pattern = new RegExp(enterText, 'g');
 
         var color = $('#sample').css('color');
         var background = $('#sample').css('background-color');
@@ -200,19 +199,33 @@ $(document).ready(function () {
 
         function traverseNode(node) {
             if (node.nodeType === 3) { // Text node
-                var match = pattern.exec(node.data);
-                if (match) {
+                var newContent = node.textContent;
+                var match;
+                var lastIndex = 0;
+                var fragments = [];
+
+                while ((match = pattern.exec(newContent)) !== null) {
+                    fragments.push(document.createTextNode(newContent.slice(lastIndex, match.index)));
+                    
                     if (action === 'highlight') {
                         var span = document.createElement('span');
                         span.className = 'contentText';
-                        var highlighted = node.splitText(match.index);
-                        highlighted.splitText(match[0].length);
-                        span.appendChild(highlighted.cloneNode(true));
-                        highlighted.parentNode.replaceChild(span, highlighted);
-                    } else if (action === 'delete') {
-                        node.data = node.data.replace(pattern, '');
+                        span.textContent = match[0];
+                        fragments.push(span);
                     }
-                    return 1;
+                    
+                    lastIndex = pattern.lastIndex;
+                }
+
+                if (lastIndex < newContent.length) {
+                    fragments.push(document.createTextNode(newContent.slice(lastIndex)));
+                }
+
+                if (fragments.length > 0) {
+                    var parent = node.parentNode;
+                    fragments.forEach(fragment => parent.insertBefore(fragment, node));
+                    parent.removeChild(node);
+                    return fragments.length - 1;
                 }
             } else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
                 for (var i = 0; i < node.childNodes.length; i++) {
@@ -232,6 +245,8 @@ $(document).ready(function () {
                 'font-style': fontStyle,
                 'text-decoration': textDecoration
             });
+        } else if (action === 'delete') {
+            $('#editContent').html($('#editContent').html().replace(pattern, ''));
         }
     }
 
