@@ -9,7 +9,7 @@ function toggleExpand(event) {
     if (expandable.classList.contains('expanded')) {
         expandable.classList.remove('expanded');
         content.style.display = 'none';
-        icon.innerText = '◄';
+        icon.innerText = '►';
     } else {
         expandable.classList.add('expanded');
         content.style.display = 'block';
@@ -24,7 +24,7 @@ for (var i = 0; i < icons.length; i++) {
 
 /*SORTABLE EXPANDABLE ITEMS */
 $(function () {
-    $('.side').sortable({
+    $('#side').sortable({
         cursor: "n-resize",
         helper: function (_, ui) {
             var $clone = $(ui).clone();
@@ -42,7 +42,7 @@ $(function () {
         },
 
     });
-    $("'.side'").disableSelection();
+    $("#side").disableSelection();
 });
 
 //SYCHRORNIZE NAVIGATION----------------------------------------------------------------
@@ -67,7 +67,7 @@ $(document).ready(function () {
         event.preventDefault();
         synchronizeNavigation('#nav-footer', '#nav-header', this);
     });
-}); 
+});
 
 
 // PROCESS EMOJI DROPDOWN----------------------------------------------------------------
@@ -87,8 +87,12 @@ select.addEventListener('click', () => {
 options.forEach(option => {
     option.addEventListener('click', () => {
         selected.innerText = option.innerText;
-        select.classList.remove('emoji-select-clicked');
-        caret.classList.remove('caret-rotate');
+        select.classList.remove('emoji-select-clicked')
+        document.getElementById('addButton').addEventListener('click', () => {
+            caret.classList.remove('caret-rotate');
+        }
+        );
+
         menu.classList.remove('emoji-menu-open');
     });
 });
@@ -96,7 +100,10 @@ options.forEach(option => {
 document.addEventListener('click', (e) => {
     if (!dropdown.contains(e.target)) {
         select.classList.remove('emoji-select-clicked');
-        caret.classList.remove('caret-rotate');
+        document.getElementById('addButton').addEventListener('click', () => {
+            caret.classList.remove('caret-rotate');
+        }
+        );
         menu.classList.remove('emoji-menu-open');
     }
 });
@@ -107,7 +114,11 @@ const addButton = document.getElementById('addButton');
 
 addButton.addEventListener('click', function () {
     const newEmoji = document.querySelector('.emoji-selected').innerText
-    dragDropContent.innerHTML += '<div class="drag-drop-content-item">' + newEmoji + '</div>';
+    dragDropContent.innerHTML += `<div class = "drag-drop-content-item-wrapper">
+    <div class="drag-drop-content-item"> ${newEmoji} </div>
+    <p>${getEmojiName(newEmoji)}</p>
+    </div>
+    `;
 });
 
 $(function () {
@@ -269,3 +280,52 @@ $(document).ready(function () {
         $('#editContent').html(originalContent);
     });
 });
+
+
+
+
+function getEmojiName(emoji) {
+    let name;
+    switch (emoji) {
+        case '🐁':
+            name = "Mouse";
+            break;
+        case '🐃':
+            name = "Buffalo";
+            break;
+        case '🐅':
+            name = "Tiger";
+            break;
+        case '🐈':
+            name = "Cat";
+            break;
+        case '🐉':
+            name = "Dragon";
+            break;
+        case '🐍':
+            name = "Snack";
+            break;
+        case '🐎':
+            name = "Horse";
+            break;
+        case '🐐':
+            name = "Goat";
+            break;
+        case '🐒':
+            name = "Monkey";
+            break;
+        case '🐓':
+            name = "Chicken";
+            break;
+        case '🐕':
+            name = "Dog";
+            break;
+        case '🐖':
+            name = "Pig";
+            break;
+        default:
+            name = "Invalid name";
+            break;
+    }
+    return  name;
+}

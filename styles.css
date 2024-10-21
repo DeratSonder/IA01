@@ -100,10 +100,11 @@ body {
 
 /* EXPANDABLE ITEMS ---------------------------------------------------*/
 .expandable {
-
     margin-bottom: 10px;
     max-width: 500px;
     margin: 10px;
+    margin-left: 0;
+   
 }
 
 .expandable-title {
@@ -397,6 +398,18 @@ body {
     margin: 20px;
 }
 
+.drag-drop-content-item-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drag-drop-content-item-wrapper p {
+    text-align: center;
+    margin-top: 5px;
+}
+
 .drag-drop-content-item {
     display: flex;
     background: radial-gradient(circle, #7d9dda, #3d60a9);
@@ -435,6 +448,7 @@ body {
 }
 
 .caret {
+   
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
@@ -562,11 +576,89 @@ body {
 }
 
 
+@media screen and (max-width: 768px) {
 
+    .container {
+        width: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+    }
 
+    .header-container {
+        grid-column: 1;
+        grid-row: 1;
+        position: relative;
+        height: auto;
+        padding-bottom: 20px;
 
+    }
 
+    .header {
+        font-size: 1.2em;
+        height: auto;
+        padding: 10px 0;
+    }
 
+    .header-nav {
+        width: 90%;
+        font-size: 0.8em;
+        position: relative;
+        top: auto;
+        margin: 10px auto;
+        flex-wrap: wrap;
+    }
 
+    .header-nav-item {
+        margin: 5px;
+    }
 
+    .side {
+        grid-row: 2;
+        grid-column: 1;
+        padding: 10px;
+    }
 
+    .main {
+        grid-row: 3;
+        grid-column: 1;
+        grid-template-rows: auto auto;
+    }
+
+    .edit-text, .drag-drop {
+        margin: 10px;
+    }
+
+    .edit-text-header, .drag-drop-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .edit-text-process, .edit-text-review, .drag-drop-process {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+
+    .edit-text-process input, .edit-text-process button,
+    .edit-text-review input, .edit-text-review button,
+    .drag-drop-process button {
+        margin: 5px;
+    }
+
+    .drag-drop-content {
+        justify-content: center;
+    }
+
+    .footer {
+        grid-row: 4;
+        grid-column: 1;
+    }
+
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .footer-nav {
+        margin-top: 10px;
+    }
+}
