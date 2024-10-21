@@ -2,18 +2,14 @@
 <html>
 
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IA01</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
-
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
 </head>
 
 <body>
@@ -25,12 +21,12 @@
                 Bài tập 1 - 22120410
             </div>
 
-            <div class="nav" id="nav-header">
-                <div class="nav-item"><a class="active" href="#menu1">Menu 1</a></div>
-                <div class="nav-item"><a href="#menu2">Menu 2</a></div>
-                <div class="nav-item"><a href="#menu3">Menu 3</a></div>
-                <div class="nav-item"><a href="#menu4">Menu 4</a></div>
-                <div class="nav-item"><a href="#menu5">Menu 5</a></div>
+            <div class="header-nav" id="nav-header">
+                <div class="header-nav-item"><a class="active" href="#menu1">Menu 1</a></div>
+                <div class="header-nav-item"><a href="#menu2">Menu 2</a></div>
+                <div class="header-nav-item"><a href="#menu3">Menu 3</a></div>
+                <div class="header-nav-item"><a href="#menu4">Menu 4</a></div>
+                <div class="header-nav-item"><a href="#menu5">Menu 5</a></div>
             </div>
 
             <div class="line"></div>
@@ -40,9 +36,9 @@
 
             <div class="expandable">
                 <div class="expandable-title">
-                    <ion-icon name="caret-back-sharp" class="icon"></ion-icon>
+                    <div name="caret-back-sharp" class="icon">◄</div>
                     <span>NEWS 01</span>
-                    <i class="fas fa-arrows-alt-v"></i>
+                    <div class="setCursor">↕</div>
                 </div>
                 <div class="expandable-content-wrap">
                     <div class="expandable-content">
@@ -57,9 +53,9 @@
 
             <div class="expandable">
                 <div class="expandable-title">
-                    <ion-icon name="caret-back-sharp" class="icon"></ion-icon>
+                    <div name="caret-back-sharp" class="icon">◄</div>
                     <span>NEWS 02</span>
-                    <i class="fas fa-arrows-alt-v"></i>
+                    <div class="setCursor">↕</div>
                 </div>
                 <div class="expandable-content-wrap">
                     <div class="expandable-content">
@@ -74,9 +70,9 @@
 
             <div class="expandable">
                 <div class="expandable-title">
-                    <ion-icon name="caret-back-sharp" class="icon"></ion-icon>
+                    <div name="caret-back-sharp" class="icon">◄</div>
                     <span>NEWS 03</span>
-                    <i class="fas fa-arrows-alt-v"></i>
+                    <div class="setCursor">↕</div>
                 </div>
                 <div class="expandable-content-wrap">
                     <div class="expandable-content">
@@ -91,9 +87,9 @@
 
             <div class="expandable">
                 <div class="expandable-title">
-                    <ion-icon name="caret-back-sharp" class="icon"></ion-icon>
+                    <div name="caret-back-sharp" class="icon">◄</div>
                     <span>NEWS 04</span>
-                    <i class="fas fa-arrows-alt-v"></i>
+                    <div class="setCursor">↕</div>
                 </div>
                 <div class="expandable-content-wrap">
                     <div class="expandable-content">
@@ -118,8 +114,8 @@
 
                     <div class="edit-text-process">
 
-                        <div class = "edit-text-process-dropdown">
-                            <input type="text" id ="enterText" placeholder="Enter text here">
+                        <div class="edit-text-process-dropdown">
+                            <input type="text" id="enterText" placeholder="Enter text here">
                             <ul class="enter-text-dropdown">
                                 <li>a</li>
                                 <li>a[a-z]</li>
@@ -127,38 +123,38 @@
                                 <li>.a[a-z]</li>
                             </ul>
                         </div>
-                            
-                        <button id = "highlightButton">Highlight</button>
-                        <button id = "deleteButton">Delete</button>
-                        <button id = "resetButton">Reset</button>
+
+                        <button id="highlightButton">Highlight</button>
+                        <button id="deleteButton">Delete</button>
+                        <button id="resetButton">Reset</button>
                     </div>
 
                     <div class="edit-text-review">
-                        <p class = "sampleText" id ="sample">Sample Text</p>
-                        <input type="color" id ="textColor" />
+                        <p class="sampleText" id="sample">Sample Text</p>
+                        <input type="color" id="textColor" />
                         <div class="setting-dropdown">
                             <button id="settingButton">&#x1F6E0</button>
-                            <form class = "setting-text-dropdown">
+                            <form class="setting-text-dropdown">
                                 <label>
-                                    <input type="checkbox" id = "bold" value="bold"> Bold
+                                    <input type="checkbox" id="bold" value="bold"> Bold
                                 </label><br>
                                 <label>
-                                    <input type="checkbox"  id="italic" value="italic"> Italic
+                                    <input type="checkbox" id="italic" value="italic"> Italic
                                 </label><br>
                                 <label>
                                     <input type="checkbox" id="underline" value="underline"> Underline
                                 </label><br>
                                 <label>
-                                    <input type="color"  value=""> Background
+                                    <input type="color" value=""> Background
                                 </label>
-                    
+
                             </form>
-                           
+
                         </div>
-                        
+
                     </div>
                 </div>
-                <div class="edit-text-content" id = "editContent">
+                <div class="edit-text-content" id="editContent">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa ratione dolorum, sunt deleniti laborum
                     asperiores molestias! Provident cumque amet, quod cupiditate, ut animi sequi voluptate numquam,
                     possimus quo quisquam minima. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora
@@ -181,14 +177,14 @@
                         <div class="drag-drop-process">
                             <div class="dropdown">
 
-                                <div class="select">
-                                    <span class="selected">🐁</span>
+                                <div class="emoji-select">
+                                    <span class="emoji-selected">🐁</span>
                                     <div class="custom-select-divider"></div>
                                     <div class="caret"></div>
                                 </div>
-    
-                                <ul class="menu">
-                                    <li class = "active">🐁</li>
+
+                                <ul class="emoji-menu">
+                                    <li class="active">🐁</li>
                                     <li>🐃</li>
                                     <li>🐅</li>
                                     <li>🐈</li>
@@ -201,20 +197,15 @@
                                     <li>🐕</li>
                                     <li>🐖</li>
                                 </ul>
-    
+
                             </div>
                             <button id="addButton">Add Image</button>
                         </div>
-                        
-
                     </div>
                 </div>
-                <div class="drag-drop-content">
-                   <div class="drag-drop-content-item">🐃</div>
-                   <div class="drag-drop-content-item">🐃</div>
-                </div>
+                <div class="drag-drop-content"></div>
             </div>
-           
+
         </div>
         <div class="footer">
             <div class="line"></div>
@@ -225,13 +216,13 @@
 
                 <div class="footer-nav active" id="nav-footer">
                     <div class="footer-nav-item"><a class="active" href="#menu1">Menu 1</a></div>
-                    <div class="nav-devider">|</div>
+                    <div class="footer-nav-devider">|</div>
                     <div class="footer-nav-item"><a href="#menu2">Menu 2</a></div>
-                    <div class="nav-devider">|</div>
+                    <div class="footer-nav-devider">|</div>
                     <div class="footer-nav-item"><a href="#menu3">Menu 3</a></div>
-                    <div class="nav-devider">|</div>
+                    <div class="footer-nav-devider">|</div>
                     <div class="footer-nav-item"><a href="#menu4">Menu 4</a></div>
-                    <div class="nav-devider">|</div>
+                    <div class="footer-nav-devider">|</div>
                     <div class="footer-nav-item"><a href="#menu5">Menu 5</a></div>
                 </div>
             </div>
@@ -245,3 +236,5 @@
 </body>
 
 </html>
+
+

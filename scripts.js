@@ -1,4 +1,6 @@
 
+
+/*PROCESS EXPANDABLE ITEMS--------------------------------------------- */
 function toggleExpand(event) {
     var icon = event.currentTarget;
     var expandable = icon.closest('.expandable');
@@ -7,11 +9,11 @@ function toggleExpand(event) {
     if (expandable.classList.contains('expanded')) {
         expandable.classList.remove('expanded');
         content.style.display = 'none';
-        icon.setAttribute('name', 'caret-back-sharp');
+        icon.innerText = '◄';
     } else {
         expandable.classList.add('expanded');
         content.style.display = 'block';
-        icon.setAttribute('name', 'arrow-down-outline');
+        icon.innerText = '⬇';
     }
 }
 
@@ -20,12 +22,30 @@ for (var i = 0; i < icons.length; i++) {
     icons[i].addEventListener('click', toggleExpand);
 }
 
+/*SORTABLE EXPANDABLE ITEMS */
 $(function () {
-    $(".side").sortable();
+    $('.side').sortable({
+        cursor: "n-resize",
+        helper: function (_, ui) {
+            var $clone = $(ui).clone();
+            $clone.css('position', 'absolute');
+            return $clone.get(0);
+        },
+        start: function (_, ui) {
+            ui.item.show();
+            ui.helper.css(
+                {
+                    'z-index': 1000,
+                    'opacity': 0.5
+                }
+            );
+        },
+
+    });
+    $("'.side'").disableSelection();
 });
 
-//----------------------------------------------------------------
-
+//SYCHRORNIZE NAVIGATION----------------------------------------------------------------
 $(document).ready(function () {
 
     function synchronizeNavigation(navClicked, navToSync, clickedElement) {
@@ -47,47 +67,46 @@ $(document).ready(function () {
         event.preventDefault();
         synchronizeNavigation('#nav-footer', '#nav-header', this);
     });
-});
+}); 
 
 
-//----------------------------------------------------------------
+// PROCESS EMOJI DROPDOWN----------------------------------------------------------------
 const dropdown = document.querySelector('.dropdown');
-const select = dropdown.querySelector('.select');
+const select = dropdown.querySelector('.emoji-select');
 const caret = dropdown.querySelector('.caret');
-const menu = dropdown.querySelector('.menu');
-const options = dropdown.querySelectorAll('.menu li');
-const selected = dropdown.querySelector('.selected');
+const menu = dropdown.querySelector('.emoji-menu');
+const options = dropdown.querySelectorAll('.emoji-menu li');
+const selected = dropdown.querySelector('.emoji-selected');
 
 select.addEventListener('click', () => {
-    select.classList.toggle('select-clicked');
+    select.classList.toggle('emoji-select-clicked');
     caret.classList.toggle('caret-rotate');
-    menu.classList.toggle('menu-open');
+    menu.classList.toggle('emoji-menu-open');
 });
 
 options.forEach(option => {
     option.addEventListener('click', () => {
         selected.innerText = option.innerText;
-        select.classList.remove('select-clicked');
+        select.classList.remove('emoji-select-clicked');
         caret.classList.remove('caret-rotate');
-        menu.classList.remove('menu-open');
+        menu.classList.remove('emoji-menu-open');
     });
 });
 
 document.addEventListener('click', (e) => {
     if (!dropdown.contains(e.target)) {
-        select.classList.remove('select-clicked');
+        select.classList.remove('emoji-select-clicked');
         caret.classList.remove('caret-rotate');
-        menu.classList.remove('menu-open');
+        menu.classList.remove('emoji-menu-open');
     }
 });
 
-//----------------------------------------------------------------
-
+//ADD NEW EMOJI AND SORTABLE EMOJI LIST----------------------------------------------------------------
 const dragDropContent = document.querySelector('.drag-drop-content');
 const addButton = document.getElementById('addButton');
 
 addButton.addEventListener('click', function () {
-    const newEmoji = document.querySelector('.selected').innerText
+    const newEmoji = document.querySelector('.emoji-selected').innerText
     dragDropContent.innerHTML += '<div class="drag-drop-content-item">' + newEmoji + '</div>';
 });
 
@@ -96,15 +115,14 @@ $(function () {
         placeholder: "ui-sortable-placeholder",
         cursor: "move",
         tolerance: "pointer",
-        start: function (e, ui) {
+        start: function (_, ui) {
             ui.placeholder.height(ui.item.outerHeight());
             ui.placeholder.width(ui.item.outerWidth());
         }
     });
 });
 
-//----------------------------------------------------------------
-
+//DROPDOWN TO ENTER TEXT-----------------------------------------------------------
 const dropdownEdittext = document.getElementById('enterText');
 const menuEdittext = document.querySelector('.enter-text-dropdown');
 const optionsEdittext = document.querySelectorAll('.enter-text-dropdown li');
@@ -126,8 +144,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-
-//----------------------------------------------------------------
+//DROPDOWN TO SETTING TEXT----------------------------------------------------------------
 const dropdownSetting = document.getElementById('settingButton');
 const menuSetting = document.querySelector('.setting-text-dropdown');
 
@@ -135,16 +152,13 @@ dropdownSetting.addEventListener('click', () => {
     menuSetting.classList.toggle('setting-text-dropdown-open');
 });
 
-
 document.addEventListener('click', (e) => {
     if (!dropdownSetting.contains(e.target) && !menuSetting.contains(e.target)) {
         menuSetting.classList.remove('setting-text-dropdown-open');
     }
 });
 
-//----------------------------------------------------------------
-
-
+// CHANGE ATTRIBUTE TEXT IN REALTIME------------------------------------------------------
 $(function () {
     $('input[type="color"]').on('input', function () {
         if ($(this).attr('id') === 'textColor') {
@@ -177,11 +191,18 @@ $(function () {
             'text-decoration': textDecoration
         });
 
+        $('.contentText').css({
+            'font-weight': fontWeight,
+            'font-style': fontStyle,
+            'text-decoration': textDecoration
+        });
+
 
     });
 });
 
 
+// PROCESS TEXT
 $(document).ready(function () {
     const originalContent = $('#editContent').html();
 
@@ -191,14 +212,8 @@ $(document).ready(function () {
 
         const pattern = new RegExp(enterText, 'g');
 
-        var color = $('#sample').css('color');
-        var background = $('#sample').css('background-color');
-        var fontWeight = $('#sample').css('font-weight');
-        var textDecoration = $('#sample').css('text-decoration');
-        var fontStyle = $('#sample').css('font-style');
-
         function traverseNode(node) {
-            if (node.nodeType === 3) { // Text node
+            if (node.nodeType === 3) {
                 var newContent = node.textContent;
                 var match;
                 var lastIndex = 0;
@@ -206,14 +221,14 @@ $(document).ready(function () {
 
                 while ((match = pattern.exec(newContent)) !== null) {
                     fragments.push(document.createTextNode(newContent.slice(lastIndex, match.index)));
-                    
+
                     if (action === 'highlight') {
                         var span = document.createElement('span');
                         span.className = 'contentText';
                         span.textContent = match[0];
                         fragments.push(span);
                     }
-                    
+
                     lastIndex = pattern.lastIndex;
                 }
 
@@ -237,15 +252,7 @@ $(document).ready(function () {
 
         traverseNode(document.getElementById('editContent'));
 
-        if (action === 'highlight') {
-            $('.contentText').css({
-                'color': color,
-                'background-color': background,
-                'font-weight': fontWeight,
-                'font-style': fontStyle,
-                'text-decoration': textDecoration
-            });
-        } else if (action === 'delete') {
+        if (action === 'delete') {
             $('#editContent').html($('#editContent').html().replace(pattern, ''));
         }
     }
